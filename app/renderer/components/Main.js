@@ -266,17 +266,17 @@ const Main = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    loading: state.loading,
-    image: state.image,
-    kCount: state.kCount,
-    proceededImage: state.proceededImage,
-    threshold: state.threshold,
-    histogramData: state.histogramData,
-    cumulativeData: state.cumulativeData,
-    cumulativeClusterizedData: state.cumulativeClusterizedData,
-    clusterized: state.clusterized,
-    etalon: state.etalon,
-    pattern: state.pattern,
+    loading: state.main.loading,
+    image: state.main.image,
+    kCount: state.main.kCount,
+    proceededImage: state.main.proceededImage,
+    threshold: state.main.threshold,
+    histogramData: state.main.histogramData,
+    cumulativeData: state.main.cumulativeData,
+    cumulativeClusterizedData: state.main.cumulativeClusterizedData,
+    clusterized: state.main.clusterized,
+    etalon: state.main.etalon,
+    pattern: state.main.pattern,
   };
 };
 
