@@ -6,6 +6,7 @@ import { createMemoryHistory } from 'history';
 import routes from './routes';
 import configureStore from './store';
 
+
 const syncHistoryWithStore = (store, history) => {
   const { router } = store.getState();
   if (router && router.location) {

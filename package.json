@@ -4,13 +4,15 @@
   "description": "electron-react-redux-boilerplate",
   "main": "init.js",
   "author": {
-    "name": "Jordan Schroter",
-    "email": "email@author.com"
+    "name": "Ostap Pushkar",
+    "email": "pushkarostap@gmail.com"
   },
   "repository": "https://github.com/jschr/electron-react-redux-boilerplate",
   "license": "MIT",
   "dependencies": {
     "@babel/register": "^7.9.0",
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/icons": "^4.11.2",
     "connected-react-router": "^6.8.0",
     "history": "^4.10.1",
     "prop-types": "^15.7.2",
@@ -18,9 +20,11 @@
     "react-dom": "^16.13.0",
     "react-redux": "^7.2.0",
     "react-router": "^5.1.2",
+    "recharts": "^1.8.5",
     "redux": "^4.0.5",
     "redux-actions": "^2.6.5",
     "redux-localstorage": "^0.4.1",
+    "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
