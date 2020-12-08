@@ -1,21 +1,7 @@
 import actionTypes from '../types';
 
-const initialState = {
-  etalon: null,
-  pattern: null,
-  etalonOriginal: null,
-  patternOriginal: null,
-  image: null,
-  kCount: 3,
-  threshold: 30,
-  loading: false,
-  clusterized: false,
-  grayscaled: false,
-  cumulative: [],
-  histgram: [],
-};
 
-const mainReducer = (state = initialState, action) => {
+const mainReducer = (state = {}, action) => {
   switch (action.type) {
     case actionTypes.LOAD_ETALON:
       return {
@@ -34,6 +20,8 @@ const mainReducer = (state = initialState, action) => {
         ...state,
         pattern: state.patternOriginal.src,
         etalon: state.etalonOriginal.src,
+        clusterized: false,
+        grayscaled: false,
       };
     case actionTypes.PROCEED_IMAGE:
       return {
