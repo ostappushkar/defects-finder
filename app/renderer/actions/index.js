@@ -1,14 +1,15 @@
-import { Threshold } from "../services/Threshold";
-import { Grayscale } from "../services/Grayscale";
+import { Threshold } from '../services/Threshold';
+import { Grayscale } from '../services/Grayscale';
 
-import { get_pixel_dataset, k_means, quantize } from "../services/Cluster";
-import  action  from "./action";
-import actionTypes from "../types";
+import { get_pixel_dataset, k_means, quantize } from '../services/Cluster';
+import action from './action';
+import actionTypes from '../types';
 import {
   calculateCumulativeFrequency,
+  calculateFrequency,
   initImage,
   parseHistogramData,
-} from "../services/helpers";
+} from '../services/helpers';
 
 export const loadEtalon = (files) => (dispatch) => {
   if (files.length > 0) {
@@ -33,7 +34,6 @@ export const loadPattern = (files) => (dispatch) => {
       const img = new Image();
       img.src = e.target.result;
       img.onload = () => {
-        console.log("Pattern");
         dispatch(action(actionTypes.LOAD_PATTERN, img));
       };
     };
@@ -56,10 +56,10 @@ export const restoreOriginal = () => (dispatch) => {
 export const saveResult = () => (dispatch, getState) => {
   const { image, canvas } = getState();
   if (image) {
-    let imageType = image.substring(image.indexOf(":") + 1, image.indexOf(";"));
-    let link = document.createElement("a");
+    const imageType = image.substring(image.indexOf(':') + 1, image.indexOf(';'));
+    const link = document.createElement('a');
     link.href = canvas.toDataURL(imageType);
-    link.download = "result.png";
+    link.download = 'result.png';
     link.click();
     dispatch(action(actionTypes.SAVE_RESULT));
   }
@@ -72,7 +72,7 @@ export const imageThreshold = () => (dispatch, getState) => {
     action(actionTypes.PROCEED_IMAGE, {
       pattern: Threshold(patternOriginal, threshold),
       etalon: Threshold(etalonOriginal, threshold),
-    })
+    }),
   );
 };
 
@@ -87,7 +87,7 @@ export const imageClusterize = () => (dispatch, getState) => {
     action(actionTypes.PROCEED_IMAGE, {
       pattern: quantize(patternOriginal, centroidsPattern),
       etalon: quantize(etalonOriginal, centroidsEtalon),
-    })
+    }),
   );
 };
 
@@ -98,28 +98,8 @@ export const imageGrayscale = () => (dispatch, getState) => {
     action(actionTypes.PROCEED_IMAGE, {
       pattern: Grayscale(patternOriginal),
       etalon: Grayscale(etalonOriginal),
-    })
+    }),
   );
-};
-
-export const getData = () => (dispatch, getState) => {
-  const { canvas } = getState();
-  const context = canvas.getContext("2d");
-  const data = context.getImageData(0, 0, canvas.width, canvas.height).data;
-  const pixelMatrix = [];
-  console.log(data.length);
-  for (let i = 0; i < data.length; i += 4) {
-    pixelMatrix[i / 4] = (data[i] + data[i + 1] + data[i + 2]) / 3;
-  }
-  const frequency = pixelMatrix.reduce(function (pixels, pixel) {
-    if (pixel in pixels) {
-      pixels[pixel]++;
-    } else {
-      pixels[pixel] = 1;
-    }
-    return pixels;
-  }, {});
-  console.log(frequency);
 };
 
 export const imageHistogram = () => (dispatch, getState) => {
@@ -130,16 +110,51 @@ export const imageHistogram = () => (dispatch, getState) => {
   const patternHeight = patternCanvas.height;
   const etalonWidth = etalonCanvas.width;
   const etalonHeight = etalonCanvas.height;
-  const patternData = patternCanvas
-    .getContext("2d")
-    .getImageData(0, 0, patternWidth, patternHeight).data;
-  const etalonData = etalonCanvas
-    .getContext("2d")
-    .getImageData(0, 0, etalonWidth, etalonHeight).data;
-  localStorage.clear();
+  const patternData = patternCanvas.getContext('2d').getImageData(0, 0, patternWidth, patternHeight)
+    .data;
+  const etalonData = etalonCanvas.getContext('2d').getImageData(0, 0, etalonWidth, etalonHeight)
+    .data;
+  const histogram = parseHistogramData(
+    calculateFrequency(etalonData),
+    calculateFrequency(patternData),
+  );
+  dispatch(action(actionTypes.IMAGE_HISTOGRAM, histogram));
   const cumulative = parseHistogramData(
     calculateCumulativeFrequency(etalonData),
-    calculateCumulativeFrequency(patternData)
+    calculateCumulativeFrequency(patternData),
   );
   dispatch(action(actionTypes.IMAGE_CUMULATIVE, cumulative));
+};
+
+export const imageHistogramClusterized = () => (dispatch, getState) => {
+  const { etalon, pattern } = getState();
+  const etalonImage = new Image();
+  etalonImage.src = etalon;
+  etalonImage.onload = () => {
+    const patternImage = new Image();
+    patternImage.src = pattern;
+    patternImage.onload = () => {
+      const etalonCanvas = initImage(etalonImage);
+      const patternCanvas = initImage(patternImage);
+      const patternWidth = patternCanvas.width;
+      const patternHeight = patternCanvas.height;
+      const etalonWidth = etalonCanvas.width;
+      const etalonHeight = etalonCanvas.height;
+      const patternData = patternCanvas
+        .getContext('2d')
+        .getImageData(0, 0, patternWidth, patternHeight).data;
+      const etalonData = etalonCanvas.getContext('2d').getImageData(0, 0, etalonWidth, etalonHeight)
+        .data;
+      const histogram = parseHistogramData(
+        calculateFrequency(etalonData),
+        calculateFrequency(patternData),
+      );
+      dispatch(action(actionTypes.IMAGE_HISTOGRAM_CLUSTERIZED, histogram));
+      const cumulative = parseHistogramData(
+        calculateCumulativeFrequency(etalonData),
+        calculateCumulativeFrequency(patternData),
+      );
+      dispatch(action(actionTypes.IMAGE_CUMULATIVE_CLUSTERIZED, cumulative));
+    };
+  };
 };

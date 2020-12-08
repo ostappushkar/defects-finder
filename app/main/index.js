@@ -1,9 +1,10 @@
 import path from 'path';
 import { app, crashReporter, BrowserWindow, Menu } from 'electron';
-
+import store from './store';
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 let mainWindow = null;
+let graphWindow = null;
 let forceQuit = false;
 
 const installExtensions = async () => {
@@ -20,8 +21,8 @@ const installExtensions = async () => {
 };
 
 crashReporter.start({
-  productName: 'YourName',
-  companyName: 'YourCompany',
+  productName: 'Defect Finder',
+  companyName: 'Ostap Pushkar',
   submitURL: 'https://your-domain.com/url-to-submit',
   uploadToServer: false,
 });
@@ -40,21 +41,41 @@ app.on('ready', async () => {
   }
 
   mainWindow = new BrowserWindow({
-    width: 1000,
-    height: 800,
-    minWidth: 640,
-    minHeight: 480,
+    width: 1280,
+    height: 720,
+    minWidth: 1280,
+    minHeight: 720,
     show: false,
+    title: 'Defect Finder',
     webPreferences: {
       nodeIntegration: true,
     },
   });
 
-  mainWindow.loadFile(path.resolve(path.join(__dirname, '../renderer/index.html')));
+  graphWindow = new BrowserWindow({
+    width: 850,
+    height: 710,
+    minWidth: 850,
+    minHeight: 710,
+    show: false,
+    title: 'Graphs',
+    resizable: false,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  });
+
+  mainWindow.loadURL(`file://${path.join(__dirname, '../renderer/index.html')}`);
+  graphWindow.loadURL(
+    `file://${path.join(__dirname, '../renderer/index.html#/graph')}`,
+  );
+
 
   // show window once on first load
   mainWindow.webContents.once('did-finish-load', () => {
     mainWindow.show();
+    graphWindow.show();
+
   });
 
   mainWindow.webContents.on('did-finish-load', () => {
@@ -67,11 +88,17 @@ app.on('ready', async () => {
         if (!forceQuit) {
           e.preventDefault();
           mainWindow.hide();
+          graphWindow.hide();
         }
       });
 
       app.on('activate', () => {
         mainWindow.show();
+        graphWindow.show();
+
+        mainWindow.crashReporter();
+
+        graphWindow.crashReporter();
       });
 
       app.on('before-quit', () => {
@@ -79,7 +106,9 @@ app.on('ready', async () => {
       });
     } else {
       mainWindow.on('closed', () => {
+        app.quit();
         mainWindow = null;
+        graphWindow = null;
       });
     }
   });
@@ -87,7 +116,6 @@ app.on('ready', async () => {
   if (isDevelopment) {
     // auto-open dev tools
     mainWindow.webContents.openDevTools();
-
     // add inspect element on right click menu
     mainWindow.webContents.on('context-menu', (e, props) => {
       Menu.buildFromTemplate([
@@ -100,4 +128,9 @@ app.on('ready', async () => {
       ]).popup(mainWindow);
     });
   }
+});
+// eslint-disable-next-line no-unused-vars
+let currentState;
+store.subscribe(() => {
+  currentState = store.getState();
 });

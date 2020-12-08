@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
+// import { ConnectedRouter } from 'connected-react-router';
+import { HashRouter } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import routes from './routes';
 import configureStore from './store';
-
 
 const syncHistoryWithStore = (store, history) => {
   const { router } = store.getState();
@@ -23,7 +23,7 @@ const rootElement = document.querySelector(document.currentScript.getAttribute('
 
 ReactDOM.render(
   <Provider store={store}>
-    <ConnectedRouter history={routerHistory}>{routes}</ConnectedRouter>
+    <HashRouter history={routerHistory}>{routes}</HashRouter>
   </Provider>,
   rootElement,
 );

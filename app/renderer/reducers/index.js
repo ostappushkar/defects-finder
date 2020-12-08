@@ -1,4 +1,4 @@
-import actionTypes from "../types";
+import actionTypes from '../types';
 
 const initialState = {
   etalon: null,
@@ -11,9 +11,8 @@ const initialState = {
   loading: false,
   clusterized: false,
   grayscaled: false,
-  patternCumulative: [],
-  etalonCumulative: [],
   cumulative: [],
+  histgram: [],
 };
 
 const mainReducer = (state = initialState, action) => {
@@ -30,22 +29,11 @@ const mainReducer = (state = initialState, action) => {
         patternOriginal: action.payload.data,
         pattern: action.payload.data.src,
       };
-    case actionTypes.INIT_CANVAS:
-      return {
-        ...state,
-        canvas: action.payload.data,
-      };
     case actionTypes.RESTORE_ORIGINAL:
       return {
         ...state,
         pattern: state.patternOriginal.src,
         etalon: state.etalonOriginal.src,
-      };
-    case actionTypes.CLEAR_CANVAS:
-      return {
-        ...state,
-        clusterized: false,
-        grayscaled: false,
       };
     case actionTypes.PROCEED_IMAGE:
       return {
@@ -74,16 +62,24 @@ const mainReducer = (state = initialState, action) => {
         kCount: action.payload.data,
       };
     case actionTypes.IMAGE_CUMULATIVE:
-      localStorage.clear();
-      localStorage.setItem("cumulative", JSON.stringify(action.payload.data));
       return {
         ...state,
         cumulative: action.payload.data,
       };
+    case actionTypes.IMAGE_HISTOGRAM:
+      return {
+        ...state,
+        histogram: action.payload.data,
+      };
     case actionTypes.IMAGE_CUMULATIVE_CLUSTERIZED:
       return {
         ...state,
-        cumulativeClusterizedData: action.payload.data,
+        cumulativeC: action.payload.data,
+      };
+    case actionTypes.IMAGE_HISTOGRAM_CLUSTERIZED:
+      return {
+        ...state,
+        histogramC: action.payload.data,
       };
     default:
       return {

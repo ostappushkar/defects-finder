@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import React from 'react';
+import { connect } from 'react-redux';
 import {
   loadEtalon,
   loadPattern,
@@ -11,26 +11,26 @@ import {
   imageThreshold,
   imageHistogram,
   imageGrayscale,
-  getData,
-} from "../actions";
-import AppBar from "@material-ui/core/AppBar";
-import Card from "@material-ui/core/Card";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import CardContent from "@material-ui/core/CardContent";
-import Select from "@material-ui/core/Select";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import Menu from "@material-ui/core/Menu";
-import Toolbar from "@material-ui/core/Toolbar";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
-import MenuItem from "@material-ui/core/MenuItem";
-import RestoreRoundedIcon from "@material-ui/icons/RestoreRounded";
-import PlayCircleFilledWhiteRoundedIcon from "@material-ui/icons/PlayCircleFilledWhiteRounded";
-import ImageIcon from "@material-ui/icons/Image";
-import BrokenImageIcon from "@material-ui/icons/BrokenImage";
-import { Slider } from "@material-ui/core";
+  imageHistogramClusterized
+} from '../actions';
+import AppBar from '@material-ui/core/AppBar';
+import Card from '@material-ui/core/Card';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import CardContent from '@material-ui/core/CardContent';
+import Select from '@material-ui/core/Select';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Menu from '@material-ui/core/Menu';
+import Toolbar from '@material-ui/core/Toolbar';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
+import MenuItem from '@material-ui/core/MenuItem';
+import RestoreRoundedIcon from '@material-ui/icons/RestoreRounded';
+import PlayCircleFilledWhiteRoundedIcon from '@material-ui/icons/PlayCircleFilledWhiteRounded';
+import ImageIcon from '@material-ui/icons/Image';
+import BrokenImageIcon from '@material-ui/icons/BrokenImage';
+import { Slider } from '@material-ui/core';
 
 const Main = (props) => {
   const {
@@ -49,11 +49,9 @@ const Main = (props) => {
     imageHistogram,
     imageGrayscale,
     imageThreshold,
+    imageHistogramClusterized
   } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
-  useEffect(() => {
-    localStorage.clear();
-  }, []);
   const handleClusterize = () => {
     imageClusterize();
   };
@@ -73,11 +71,10 @@ const Main = (props) => {
   };
 
   const handleHistogram = () => {
-    alert("CLICKED");
     imageHistogram();
   };
   const handleHistogramCluster = () => {
-    imageHistogram(true);
+    imageHistogramClusterized();
   };
   const handleKCountChange = (event) => {
     setKCount(event.target.value);
@@ -94,40 +91,34 @@ const Main = (props) => {
     handleClose();
   };
   return (
-    <div className='main' style={{ height: "100vh" }}>
-      <AppBar color='inherit' position='fixed'>
-        <Toolbar className='navbar-main' variant='dense'>
-          <div className='navbar-actions'>
-            <div className='threshold-wrapper'>
-              <Typography className='k-label'>Threshold:</Typography>
+    <div className="main-container">
+      <AppBar color="inherit" position="fixed">
+        <Toolbar className="navbar-main" variant="dense">
+          <div className="navbar-actions">
+            <div className="threshold-wrapper">
+              <Typography className="k-label">Threshold:</Typography>
               <Slider
                 track={false}
                 disabled={!etalon || !pattern}
                 value={threshold}
-                aria-labelledby='Threshold'
+                aria-labelledby="Threshold"
                 marks
-                valueLabelDisplay='auto'
+                valueLabelDisplay="auto"
                 onChange={handleThresholdChange}
                 step={1}
                 min={1}
-                max={255}
-              ></Slider>
-              <IconButton
-                onClick={handleBinary}
-                disabled={!etalon || !pattern}
-                aria-label='delete'
-              >
+                max={255}></Slider>
+              <IconButton onClick={handleBinary} disabled={!etalon || !pattern} aria-label="delete">
                 <PlayCircleFilledWhiteRoundedIcon />
               </IconButton>
             </div>
-            <Typography className='k-label'>Cluster count:</Typography>
+            <Typography className="k-label">Cluster count:</Typography>
             <Select
               disabled={!etalon || !pattern}
-              labelId='k-count'
-              id='k-count'
+              labelId="k-count"
+              id="k-count"
               value={kCount}
-              onChange={handleKCountChange}
-            >
+              onChange={handleKCountChange}>
               <MenuItem value={2}>2</MenuItem>
               <MenuItem value={3}>3</MenuItem>
               <MenuItem value={4}>4</MenuItem>
@@ -139,60 +130,54 @@ const Main = (props) => {
               <MenuItem value={10}>10</MenuItem>
             </Select>
             <Button
-              variant='contained'
-              type='button'
+              variant="contained"
+              type="button"
               onClick={handleClusterize}
               disabled={!etalon || !pattern}
-              className='clusterize-btn'
-            >
+              className="clusterize-btn">
               Clusterize
             </Button>
             <Button
-              variant='contained'
-              type='button'
+              variant="contained"
+              type="button"
               onClick={handleHistogram}
               disabled={!etalon || !pattern}
-              className='clusterize-btn'
-            >
+              className="clusterize-btn">
               Histogram
             </Button>
             <Button
-              variant='contained'
-              type='button'
+              variant="contained"
+              type="button"
               onClick={handleHistogramCluster}
               disabled={!etalon || !pattern || !clusterized}
-              className='clusterize-btn'
-            >
+              className="clusterize-btn">
               Histogram Clusterized
             </Button>
             <Button
-              variant='contained'
-              type='button'
+              variant="contained"
+              type="button"
               onClick={handleGrayscale}
               disabled={!etalon || !pattern}
-              className='clusterize-btn'
-            >
+              className="clusterize-btn">
               Grayscale
             </Button>
             <IconButton
-              className='menu-btn'
-              color='inherit'
+              className="menu-btn"
+              color="inherit"
               onClick={handleMenuOpen}
-              aria-label='menu'
-            >
+              aria-label="menu">
               <MenuIcon />
             </IconButton>
             <Menu
-              id='simple-menu'
+              id="simple-menu"
               anchorEl={anchorEl}
               keepMounted
               open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem className='input-menuitem'>
-                <label id='input-label' htmlFor='upload-etalon'>
+              onClose={handleClose}>
+              <MenuItem className="input-menuitem">
+                <label id="input-label" htmlFor="upload-etalon">
                   <ListItemIcon>
-                    <ImageIcon fontSize='small' />
+                    <ImageIcon fontSize="small" />
                   </ListItemIcon>
                   <input
                     hidden
@@ -200,17 +185,16 @@ const Main = (props) => {
                       loadEtalon(event.target.files);
                       handleClose();
                     }}
-                    id='upload-etalon'
-                    type='file'
-                    accept='.jpg, .jpeg, .png, .bmp'
-                  ></input>
+                    id="upload-etalon"
+                    type="file"
+                    accept=".jpg, .jpeg, .png, .bmp"></input>
                   Open etalon
                 </label>
               </MenuItem>
-              <MenuItem className='input-menuitem'>
-                <label id='input-label' htmlFor='upload-pattern'>
+              <MenuItem className="input-menuitem">
+                <label id="input-label" htmlFor="upload-pattern">
                   <ListItemIcon>
-                    <BrokenImageIcon fontSize='small' />
+                    <BrokenImageIcon fontSize="small" />
                   </ListItemIcon>
                   <input
                     hidden
@@ -218,22 +202,21 @@ const Main = (props) => {
                       loadPattern(event.target.files);
                       handleClose();
                     }}
-                    id='upload-pattern'
-                    type='file'
-                    accept='.jpg, .jpeg, .png, .bmp'
-                  ></input>
+                    id="upload-pattern"
+                    type="file"
+                    accept=".jpg, .jpeg, .png, .bmp"></input>
                   Open pattern
                 </label>
               </MenuItem>
               <MenuItem disabled={!etalon || !pattern} onClick={handleSave}>
                 <ListItemIcon>
-                  <SaveRoundedIcon fontSize='small' />
+                  <SaveRoundedIcon fontSize="small" />
                 </ListItemIcon>
                 Save image
               </MenuItem>
               <MenuItem disabled={!etalon || !pattern} onClick={handleRestore}>
                 <ListItemIcon>
-                  <RestoreRoundedIcon fontSize='small' />
+                  <RestoreRoundedIcon fontSize="small" />
                 </ListItemIcon>
                 Restore original
               </MenuItem>
@@ -242,41 +225,37 @@ const Main = (props) => {
         </Toolbar>
       </AppBar>
 
-      <div className='canvas-content'>
-        <Card className='canvas-card'>
+      <div className="canvas-content">
+        <Card className="canvas-card">
           <CardContent>
-            <img id='image' src={etalon} />
+            <img id="image" src={etalon} />
           </CardContent>
         </Card>
-        <Card className='canvas-card'>
+        <Card className="canvas-card">
           <CardContent>
-            <img id='image' src={pattern} />
+            <img id="image" src={pattern} />
           </CardContent>
         </Card>
       </div>
 
-      <AppBar
-        position='absolute'
-        className='status-bar'
-        color='default'
-      ></AppBar>
+      <AppBar position="absolute" className="status-bar" color="default"></AppBar>
     </div>
   );
 };
 
 const mapStateToProps = (state) => {
   return {
-    loading: state.main.loading,
-    image: state.main.image,
-    kCount: state.main.kCount,
-    proceededImage: state.main.proceededImage,
-    threshold: state.main.threshold,
-    histogramData: state.main.histogramData,
-    cumulativeData: state.main.cumulativeData,
-    cumulativeClusterizedData: state.main.cumulativeClusterizedData,
-    clusterized: state.main.clusterized,
-    etalon: state.main.etalon,
-    pattern: state.main.pattern,
+    loading: state.loading,
+    image: state.image,
+    kCount: state.kCount,
+    proceededImage: state.proceededImage,
+    threshold: state.threshold,
+    histogramData: state.histogramData,
+    cumulativeData: state.cumulativeData,
+    cumulativeClusterizedData: state.cumulativeClusterizedData,
+    clusterized: state.clusterized,
+    etalon: state.etalon,
+    pattern: state.pattern,
   };
 };
 
@@ -290,8 +269,8 @@ const mapDispatchToProps = {
   imageClusterize,
   imageThreshold,
   imageGrayscale,
-  getData,
   imageHistogram,
+  imageHistogramClusterized
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
