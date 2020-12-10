@@ -12,7 +12,8 @@ import {
   imageThreshold,
   imageHistogram,
   imageGrayscale,
-  imageHistogramClusterized
+  imageHistogramClusterized,
+  recognizeDefects,
 } from '../actions';
 import AppBar from '@material-ui/core/AppBar';
 import Card from '@material-ui/core/Card';
@@ -52,7 +53,8 @@ const Main = (props) => {
     imageHistogram,
     imageGrayscale,
     imageThreshold,
-    imageHistogramClusterized
+    imageHistogramClusterized,
+    recognizeDefects,
   } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClusterize = () => {
@@ -89,7 +91,8 @@ const Main = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleFindDefects = ()=>{
+  const handleFindDefects = () =>{
+    recognizeDefects();
     ipcRenderer.send('open-result');
   }
   const handleSave = () => {
@@ -279,7 +282,8 @@ const mapDispatchToProps = {
   imageThreshold,
   imageGrayscale,
   imageHistogram,
-  imageHistogramClusterized
+  imageHistogramClusterized,
+  recognizeDefects,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

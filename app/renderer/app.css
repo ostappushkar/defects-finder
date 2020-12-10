@@ -50,6 +50,12 @@ body {
   padding: 6px 16px;
   align-items: center;
 }
+.result{
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  background-color: #e0e0e0;
+}
 .input-menuitem {
   padding: 0 !important;
 }
@@ -75,6 +81,23 @@ body {
   border-radius: 4px;
 
   background: none;
+}
+#result-image{
+  max-width: 540px;
+  min-width: 300px;
+  min-height: 300px;
+  max-height: 540px;
+}
+.result-content>.canvas-card{
+  max-width: 550px !important;
+  min-width: 550px !important;
+  min-height: 550px !important;
+  max-height: 550px !important;
+}
+.result-content>.canvas-card>.MuiCardContent-root{
+  justify-content: center;
+  align-items: center;
+  height: 518px;
 }
 .canvas-content {
   display: flex;

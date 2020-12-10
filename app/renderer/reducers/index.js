@@ -8,12 +8,14 @@ const mainReducer = (state = {}, action) => {
         ...state,
         etalonOriginal: action.payload.data,
         etalon: action.payload.data.src,
+        clusterized: false
       };
     case actionTypes.LOAD_PATTERN:
       return {
         ...state,
         patternOriginal: action.payload.data,
         pattern: action.payload.data.src,
+        clusterized: false
       };
     case actionTypes.RESTORE_ORIGINAL:
       return {
@@ -68,6 +70,11 @@ const mainReducer = (state = {}, action) => {
       return {
         ...state,
         histogramC: action.payload.data,
+      };
+    case actionTypes.DETECT_DEFECTS:
+      return {
+        ...state,
+        result: action.payload.data,
       };
     default:
       return {

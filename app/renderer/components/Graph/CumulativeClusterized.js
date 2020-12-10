@@ -2,7 +2,6 @@ import React from 'react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import { connect } from 'react-redux';
 
-import AppBar from '@material-ui/core/AppBar';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
@@ -45,7 +44,6 @@ const CumulativeClusterized = (props) => {
         </Card>
       </div>
 
-      <AppBar position="absolute" className="status-bar" color="default"></AppBar>
     </div>
   );
 };

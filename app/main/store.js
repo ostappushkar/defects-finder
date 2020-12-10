@@ -18,5 +18,6 @@ const defaultStore = {
   histogram: [],
   cumulativeC: [],
   histogramC: [],
+  result: null,
 };
 export default createStore(reducers, defaultStore, enhancer);

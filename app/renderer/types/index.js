@@ -13,5 +13,6 @@ const actionTypes = {
   PROCEED_IMAGE: "PROCEED_IMAGE",
   LOAD_PATTERN: "LOAD_PATTERN",
   LOAD_ETALON: "LOAD_ETALON",
+  DETECT_DEFECTS: "DETECT_DEFECTS",
 };
 export default actionTypes;

@@ -24,6 +24,7 @@ const installExtensions = async () => {
 crashReporter.start({
   productName: 'Defect Finder',
   companyName: 'Ostap Pushkar',
+  submitURL: "https://ostappushkar.com",
   uploadToServer: false,
 });
 
@@ -66,10 +67,10 @@ app.on('ready', async () => {
     },
   });
   resultWindow = new BrowserWindow({
-    width: 650,
-    height: 650,
-    minWidth: 650,
-    minHeight: 650,
+    width: 570,
+    height: 570,
+    minWidth: 570,
+    minHeight: 570,
     show: false,
     title: 'Result',
     resizable: false,

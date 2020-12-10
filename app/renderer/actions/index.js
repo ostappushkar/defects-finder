@@ -158,3 +158,60 @@ export const imageHistogramClusterized = () => (dispatch, getState) => {
     };
   };
 };
+
+export const recognizeDefects = () => (dispatch, getState) => {
+  dispatch(imageClusterize());
+  const { etalon, pattern } = getState();
+  // const partsCounts = 3;
+  const etalonImage = new Image();
+  etalonImage.src = etalon;
+  etalonImage.onload = () => {
+    const patternImage = new Image();
+    patternImage.src = pattern;
+    patternImage.onload = () => {
+      const etalonCanvas = initImage(etalonImage);
+      const patternCanvas = initImage(patternImage);
+      const patternWidth = patternCanvas.width;
+      const patternHeight = patternCanvas.height;
+      const etalonWidth = etalonCanvas.width;
+      const etalonHeight = etalonCanvas.height;
+      const data = patternCanvas
+      .getContext('2d')
+      .getImageData(0, 0, patternWidth, patternHeight);
+      const patternData = data.data;
+      const etalonData = etalonCanvas.getContext('2d').getImageData(0, 0, etalonWidth, etalonHeight)
+        .data;
+        const tempData =  new ImageData(
+          new Uint8ClampedArray(data.data),
+          data.width,
+          data.height
+        )
+        const newData = tempData.data;
+        let pixelCount = 0;
+        for (var i = 0; i < etalonData.length; i += 4) {
+          var ir = etalonData[i]
+          var ig = etalonData[i + 1]
+          var ib = etalonData[i + 2]
+        
+          var fr = patternData[i]
+          var fg = patternData[i + 1]
+          var fb = patternData[i + 2]
+        
+          const dr = Math.abs(ir - fr) > 10 ? fr : 0
+          const dg = Math.abs(ig - fg) > 10 ? fg : 0
+          const db = Math.abs(ib - fb) > 10 ? fb : 0
+            
+          const pxchanged = (dr > 0 && dg > 0 && db > 0)
+          newData[i] = pxchanged ? 255 : newData[i]
+          newData[i + 1] = pxchanged ? 0 : newData[i+1]
+          newData[i + 2] = pxchanged ? 0 : newData[i+2]
+          if (pxchanged) pixelCount++;
+        }
+        console.log(pixelCount);
+        patternCanvas.getContext('2d').putImageData(tempData, 0, 0);
+        dispatch(action(actionTypes.DETECT_DEFECTS, patternCanvas.toDataURL()));
+    };
+  };
+  
+
+}
