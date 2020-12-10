@@ -19,6 +19,11 @@ body {
 .MuiSlider-root {
   color: black !important;
 }
+.MuiFab-root{
+  position: absolute !important;
+  right: 20px !important;
+  bottom: 20px !important;
+}
 .MuiTab-root {
   text-transform: none !important;
 }

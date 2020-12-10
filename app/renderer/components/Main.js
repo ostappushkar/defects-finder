@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import {ipcRenderer} from 'electron';
 import {
   loadEtalon,
   loadPattern,
@@ -15,6 +16,7 @@ import {
 } from '../actions';
 import AppBar from '@material-ui/core/AppBar';
 import Card from '@material-ui/core/Card';
+import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
@@ -30,6 +32,7 @@ import RestoreRoundedIcon from '@material-ui/icons/RestoreRounded';
 import PlayCircleFilledWhiteRoundedIcon from '@material-ui/icons/PlayCircleFilledWhiteRounded';
 import ImageIcon from '@material-ui/icons/Image';
 import BrokenImageIcon from '@material-ui/icons/BrokenImage';
+import SearchIcon from '@material-ui/icons/Search';
 import { Slider } from '@material-ui/core';
 
 const Main = (props) => {
@@ -86,10 +89,14 @@ const Main = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleFindDefects = ()=>{
+    ipcRenderer.send('open-result');
+  }
   const handleSave = () => {
     saveResult();
     handleClose();
   };
+  console.log(!etalon || !pattern || !clusterized);
   return (
     <div className="main-container">
       <AppBar color="inherit" position="fixed">
@@ -237,8 +244,10 @@ const Main = (props) => {
           </CardContent>
         </Card>
       </div>
-
-      <AppBar position="absolute" className="status-bar" color="default"></AppBar>
+      {etalon && pattern && <Fab onClick={handleFindDefects} color="primary" variant="extended">
+        <SearchIcon/>
+        Find defects
+      </Fab>}
     </div>
   );
 };
