@@ -78,7 +78,9 @@ app.on('ready', async () => {
       nodeIntegration: true,
     },
   });
-
+  mainWindow.setMenu(null);
+  graphWindow.setMenu(null);
+  resultWindow.setMenu(null);
 
   mainWindow.loadURL(`file://${path.join(__dirname, '../renderer/index.html')}`);
   graphWindow.loadURL(`file://${path.join(__dirname, '../renderer/index.html#/graph')}`);

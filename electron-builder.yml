@@ -1,6 +1,6 @@
-appId: com.example.app
-copyright: Example co
-productName: MyApp
+appId: com.pushkar.defecter
+copyright: Ostap Pushkar
+productName: Defects Finder
 
 asar: true
 

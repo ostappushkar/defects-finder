@@ -1,13 +1,13 @@
 {
   "name": "defect-finder",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Defect Finder",
   "main": "init.js",
   "author": {
     "name": "Ostap Pushkar",
     "email": "pushkarostap@gmail.com"
   },
-  "repository": "https://github.com/ostappushkar/defect-finder",
+  "repository": "https://github.com/ostappushkar/defects-finder",
   "license": "MIT",
   "dependencies": {
     "@babel/register": "^7.9.0",
